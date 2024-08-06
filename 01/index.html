@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .controls{
+            position: fixed;
+            top: 30px;
+            left: 100px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border: 1px solid #000;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 0px;
+            /* background-color: #000000;
+            color: #fff; */
+            border: none;
+            cursor: pointer;
+            transition: all ease .3s;
+            width: 120px;
+        }
+        .btn:hover {
+            background-color: #000000;
+            color: #fff;
+            scale: 1.1;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="controls">
+            <button class="btn" id="playPause" onclick="playPause()">Play</button>
+            <button class="btn" id="Clear" onclick="clearBoard()">Clear</button>
+            <button class="btn" id="gen">Gen: 0</button>
+        </div>
+        <canvas id="gameOfLifeCanvas" style="border: 1px solid #000;"></canvas>
+    </main>
+
+    <script src="./index.js"></script>
+</body>
+</html>
