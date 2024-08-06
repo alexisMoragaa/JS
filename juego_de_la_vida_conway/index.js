@@ -17,57 +17,40 @@ var mapp = [];
 
 //Establece el contenido del array map con los valores que iniciaran el juego
 function initialState() {
-    
-    var newMap = [];
-    for(let i = 0; i < canvas.height; i += cellSize){
-        const row = []
-        for(let x = 0; x < canvas.width; x += cellSize){
-            let isLive = Math.random() < 0.6 ? 0 : 1;
-            row.push(isLive);
-        }
-        newMap.push(row);
-    }
-
-    mapp = newMap;
+    mapp = Array.from({length: canvas.height}, () => {
+        return Array.from({length: canvas.width}, () => Math.random() < 0.6 ? 0 : 1)
+    })
+    console.log(mapp)
 }
 
 //Funcion encargada de pintar las celuldas en cada iteracion
 function renderGame(map){
-    for(let i = 0; i < map.length; i++){
-        for(let x = 0; x < map[i].length; x++){
-            if(map[i][x]){
-                ctx.fillRect(x*cellSize, i*cellSize, cellSize, cellSize);
-            }
-        }
-    }
+    map.forEach((row, y) =>{
+        row.forEach((cell, x) => {
+            cell && ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
+        })
+    })
 }
 
-//Fcuncion ecargada de revisar, validar y crear el nuevo arreglo con los valores de las celulas
+//Funcion ecargada de revisar, validar y crear el nuevo arreglo con los valores de las celulas
 function validate(){
     const newMap = structuredClone(mapp);
 
-    for(let i = 0; i < mapp.length; i++){
-        for(let x = 0; x < mapp[i].length; x++){
-            let neighbors = getNeightbors(x, i); 
-            let cell = mapp[i][x];
-            
+    mapp.forEach((row, y) =>{
+        row.forEach((cell, x) => {
+
+            let neighbors = getNeightbors(x, y); 
+
             if (cell && (neighbors == 2 || neighbors == 3)){
-                newMap[i][x] = 1;
-            }
-            
-            if(!cell && neighbors == 3){
-                newMap[i][x] = 1;
+                newMap[y][x] = 1;
+            }else if(!cell && neighbors == 3){
+                newMap[y][x] = 1;
+            }else{
+                newMap[y][x] = 0;
             }
 
-            if(cell && neighbors < 2){
-                newMap[i][x] = 0;
-            }
-            if(cell && neighbors > 3){
-                newMap[i][x] = 0;
-            }
-        }
-    }
-
+        })
+    })
     mapp = newMap;
 }
 
@@ -86,7 +69,7 @@ function getNeightbors(x, y){
     }
     
     if(y < mapp.length -1){
-        if( mapp[y+1][x-1]) neighbors++;
+        if(mapp[y+1][x-1]) neighbors++;
         if(mapp[y+1][x]) neighbors++;
         if(mapp[y+1][x+1]) neighbors++;
     }
@@ -114,19 +97,18 @@ function clearBoard(){
     renderGame(mapp);
 }
 
+//Realiza el cambio de estado del juego
+const changeState = () => {
+    state = state ? 0 : 1;
+    document.getElementById('playPause').innerHTML = state ? 'Pause' : 'Play';
+}
+
 //Actualiza el juego en cada frame
 function update(){
     clearCanvas();
     validate();
     renderGame(mapp);
-    gen++;
-    document.getElementById('gen').innerHTML = `Gen: ${gen}`;
-}
-
-//Realiza el cambio de estado del juego
-const changeState = () => {
-    state = state ? 0 : 1;
-    document.getElementById('playPause').innerHTML = state ? 'Pause' : 'Play';
+    document.getElementById('gen').innerHTML = `Gen: ${gen++}`;
 }
 
 //inicia o pausa el juego
