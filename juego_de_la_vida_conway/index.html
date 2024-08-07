@@ -20,9 +20,9 @@
         .controls{
             position: fixed;
             top: 30px;
-            left: 100px;
+            left: 30px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             border: 1px solid #000;
         }
         .btn {
@@ -46,10 +46,12 @@
     <main>
         <div class="controls">
             <button class="btn" id="playPause" onclick="playPause()">Play</button>
-            <button class="btn" id="Clear" onclick="clearBoard()">Clear</button>
+            <button class="btn" id="restart" onclick="clearBoard(1)">Restart</button>
+            <button class="btn" id="clear" onclick="clearBoard(0)">Clear Board</button>
             <button class="btn" id="gen">Gen: 0</button>
+            <button class="btn" id="poblation">Cells: 0</button>
         </div>
-        <canvas id="gameOfLifeCanvas" style="border: 1px solid #000;"></canvas>
+        <canvas id="gameOfLifeCanvas" style="border: 1px solid #000;" width="600" height="600"></canvas>
     </main>
 
     <script src="./index.js"></script>
